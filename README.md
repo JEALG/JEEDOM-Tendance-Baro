@@ -1,1 +1,0 @@
-# JEEDOM-Tendance-Baro
