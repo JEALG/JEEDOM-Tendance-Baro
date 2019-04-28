@@ -1,0 +1,63 @@
+<div style="padding:0;width:90px;min-height:62px;" class="cmd #history# tooltips cmd-widget" data-type="info" data-subtype="numeric" data-cmd_id="#id#" data-cmd_uid="#uid#" data-eqLogic_id="#eqLogic_id#" data-eqLogic_id="#eqLogic_id#" title="#collectDate#">
+	<!-- Info Widget
+		Basé sur les widget de 	: 
+		Mise à jour 			: JAG 20190406 : Mise à jour pour la version 3.3
+	-->
+	<div class="row">
+		<center>
+		<div class="cmdName" id="cmdName#id#" style="font-weight: bold;font-size : 10px; #hideCmdName#;">#name_display#</div>
+		<div class="iconCmd"></div>
+		</center>
+	</div>
+ </div>
+ 	<script>
+ 		jeedom.cmd.update['#id#'] = function(_options){
+		// Options de personnalisation avec valeur par defaut
+          // Paramètre "sizehw" : à déclarer en pixels - 80 maxi
+              		var srcImgHeight 		= (is_numeric('#sizeh#')) 	? parseFloat('#sizeh#') 	: 80;
+              		var srcImgWidth			= (is_numeric('#sizew#')) 	? parseFloat('#sizew#') 	: 80;
+        // Paramétrage des images
+					var srcImgURL 			= 'plugins/widget/core/template/dashboard/cmd.info.numeric.Tendance-Baro/';
+				// Paramètrage du logo
+					var srcImglogo			= ('#logo#'!='#'+'logo#') ? "#logo#" : "";
+					var srcImglogo_T 		= ('#logo_type#'!='#'+'logo_type#') ? "#logo_type#" : "png";
+				// Paramètrage du logo LABEL
+					var srcImglogoLabel		= ('#logoLabel#'!='#'+'logoLabel#') ? "#logoLabel#" : "bottom_";
+					var srcImglogoLabel_T	= ('#logoLabel_type#'!='#'+'logoLabel_type#') ? "#logoLabel_type#" : "png";
+				// Paramètrage du logo ERREUR		  	  
+					var srcImglogoER		= ('#logo_error#'!='#'+'logo_error#') ? "#logo_error#" : "oups";
+					var srcImglogoER_T 		= ('#logo_error_type#'!='#'+'logo_error_type#') ? "#logo_error_type#" : "png";
+		  
+		  
+		   
+      // Update
+		var srcPictureID;    
+                    	// Update
+			var State = _options.display_value;	
+                    if (State == 0) {
+                      	srcPictureID = "0";  
+                    } else if (State == 1) {
+                      	srcPictureID = "1"; 
+                    } else if (State == 2) {
+                      	srcPictureID = "2"; 
+                    } else if (State == 3) {
+                      	srcPictureID = "3";
+                    } else if (State == 4) {
+                      	srcPictureID = "4";
+                    } else if (State == 5) {
+                      	srcPictureID = "5";
+                    } else {
+                      	srcPictureID = srcImglogoER	;
+                    }  
+   	// Update IMG + gestion erreur
+		// Update IMG + gestion erreur
+          		if (srcPictureID == "error"){
+                   	$('.cmd[data-cmd_uid=#uid#] .iconCmd').html('<img src="'+srcImgURL +srcPictureID  +'.'+ srcImglogoER_T+'" style="height:' + srcImgHeight +'px;width:' + srcImgWidth +'px;">');
+                } else {
+                    $('.cmd[data-cmd_uid=#uid#] .iconCmd').html('<img src="'+srcImgURL +srcPictureID+'.'+ srcImglogo_T +'" style="height:' + srcImgHeight +'px;width:' + srcImgWidth +'px;">');
+            	}
+           	$('.cmd[data-cmd_uid=#uid#] .label').html(State+' '+'#unite#')
+			$('.cmd[data-cmd_id=#id#]').attr('title','Valeur du '+_options.valueDate+', collectée le '+_options.collectDate)        
+   }
+		jeedom.cmd.update['#id#']({display_value:'#state#',valueDate:'#valueDate#',collectDate:'#collectDate#',alertLevel:'#alertLevel#'});
+	</script>
