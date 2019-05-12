@@ -1,12 +1,12 @@
 <div style="padding:0;width:90px;min-height:62px;" class="cmd #history# tooltips cmd-widget" data-type="info" data-subtype="numeric" data-cmd_id="#id#" data-cmd_uid="#uid#" data-eqLogic_id="#eqLogic_id#" data-eqLogic_id="#eqLogic_id#" title="#collectDate#">
-<!-- Info Widget
-    Basé sur les widget de 	: 
-    Mise à jour 			: JAG 20190406 : Mise à jour pour la version 3.3
+    <!-- Info Widget
+        Basé sur les widget de 	: 
+        Mise à jour 			: JAG 20190511 : Nettoyage du code
     -->
     <div class="row">
         <center>
             <div class="cmdName" id="cmdName#id#" style="font-weight: bold;font-size : 10px; #hideCmdName#;">#name_display#</div>
-            <div class="iconCmd"></div>
+            <div class="iconCmd#id#"></div>
         </center>
     </div>
 </div>
@@ -49,9 +49,9 @@
             }  
         // Update IMG + gestion erreur
             if (srcPictureID == "error"){
-                $('.cmd[data-cmd_uid=#uid#] .iconCmd').html('<img src="'+srcImgURL +srcPictureID  +'.'+ srcImglogoER_T+'" style="height:' + srcImgHeight +'px;width:' + srcImgWidth +'px;">');
+                $('.cmd[data-cmd_uid=#uid#] .iconCmd#id#').html('<img src="'+srcImgURL +srcPictureID  +'.'+ srcImglogoER_T+'" style="height:' + srcImgHeight +'px;width:' + srcImgWidth +'px;">');
             } else {
-                $('.cmd[data-cmd_uid=#uid#] .iconCmd').html('<img src="'+srcImgURL +srcPictureID+'.'+ srcImglogo_T +'" style="height:' + srcImgHeight +'px;width:' + srcImgWidth +'px;">');
+                $('.cmd[data-cmd_uid=#uid#] .iconCmd#id#').html('<img src="'+srcImgURL +srcPictureID+'.'+ srcImglogo_T +'" style="height:' + srcImgHeight +'px;width:' + srcImgWidth +'px;">');
             }
             $('.cmd[data-cmd_uid=#uid#] .label').html(State+' '+'#unite#')
             $('.cmd[data-cmd_id=#id#]').attr('title','Valeur du '+_options.valueDate+', collectée le '+_options.collectDate)        
