@@ -3,19 +3,30 @@
         Basé sur les widget de 	: 
         Mise à jour 			: JAG 20190511 : Nettoyage du code
     -->
-    <div class="row">
-        <center>
-            <div class="cmdName" id="cmdName#id#" style="font-weight: bold;font-size : 10px; #hideCmdName#;">#name_display#</div>
-            <div class="iconCmd#id#"></div>
-        </center>
+    <div class="title #hide_name#">
+        <div class="cmdName">#name_display#</div>
     </div>
-</div>
+    <div class="content-sm ">
+        <span class="iconCmd#id#"></span>
+    </div>
+    <div style="font-weight: bold;font-size : 10px;">
+        <span class="timeCmd#id#" ></span>
+    </div>
+    <div class="value">
+        <span class="value#id# timeCmd label label-default value"></span>
+    </div>
+    <!-- Historique -->
+        <div class="cmdStats #hide_history#" style="#displayHistory# font-size : 10px;margin-top:0px;">
+            <span title="Min" class="tooltips">#minHistoryValue##unite#</span>|<span title="Max" class="tooltips">#maxHistoryValue##unite#</span> <i class="#tendance#"></i>
+        </div>
 <script>
     jeedom.cmd.update['#id#'] = function(_options){
         // Options de personnalisation avec valeur par defaut
             // Paramètre "sizehw" : à déclarer en pixels - 80 maxi
-                var srcImgHeight 		= (is_numeric('#sizeh#')) 	? parseFloat('#sizeh#') 	: 80;
-                var srcImgWidth			= (is_numeric('#sizew#')) 	? parseFloat('#sizew#') 	: 80;
+                var srcImgHeight 		= (is_numeric('#sizeh#')) ? parseFloat('#sizeh#') : 80;
+                var srcImgWidth			= (is_numeric('#sizew#')) ? parseFloat('#sizew#') : 80;
+            // Affichage durée changement dernier etat
+                var srcImglogoTime      = '#logoTime#';
             // Paramétrage des images
                 var srcImgURL 			= 'plugins/widget/core/template/dashboard/cmd.info.numeric.Tendance-Baro/';
             // Paramètrage du logo
@@ -24,14 +35,14 @@
             // Paramètrage du logo LABEL
                 var srcImglogoLabel		= ('#logoLabel#'!='#'+'logoLabel#') ? "#logoLabel#" : "bottom_";
                 var srcImglogoLabel_T	= ('#logoLabel_type#'!='#'+'logoLabel_type#') ? "#logoLabel_type#" : "png";
-            // Paramètrage du logo ERREUR		  	  
+            // Paramètrage du logo ERREUR
                 var srcImglogoER		= ('#logo_error#'!='#'+'logo_error#') ? "#logo_error#" : "oups";
                 var srcImglogoER_T 		= ('#logo_error_type#'!='#'+'logo_error_type#') ? "#logo_error_type#" : "png";
 		  	   
         // Update
-                var srcPictureID;    
+                var srcPictureID;
         // Update
-            var State = _options.display_value;	
+            var State = _options.display_value;
             if (State == 0) {
                 srcPictureID = "0";  
             } else if (State == 1) {
@@ -48,13 +59,28 @@
                 srcPictureID = srcImglogoER	;
             }  
         // Update IMG + gestion erreur
-            if (srcPictureID == "error"){
-                $('.cmd[data-cmd_uid=#uid#] .iconCmd#id#').html('<img src="'+srcImgURL +srcPictureID  +'.'+ srcImglogoER_T+'" style="height:' + srcImgHeight +'px;width:' + srcImgWidth +'px;">');
-            } else {
-                $('.cmd[data-cmd_uid=#uid#] .iconCmd#id#').html('<img src="'+srcImgURL +srcPictureID+'.'+ srcImglogo_T +'" style="height:' + srcImgHeight +'px;width:' + srcImgWidth +'px;">');
-            }
-            $('.cmd[data-cmd_uid=#uid#] .label').html(State+' '+'#unite#')
-            $('.cmd[data-cmd_id=#id#]').attr('title','Valeur du '+_options.valueDate+', collectée le '+_options.collectDate)        
+           // Update IMG + gestion erreur
+                if (srcPictureID == "error"){
+                    $('.cmd[data-cmd_uid=#uid#] .iconCmd#id#').html('<img src="'+srcImgURL +srcPictureID  +'.'+ srcImglogoER_T+'" style="height:' + srcImgHeight +'px;width:' + srcImgWidth +'px;">');
+                } else {
+                    $('.cmd[data-cmd_uid=#uid#] .iconCmd#id#').html('<img src="'+srcImgURL +srcPictureID+'.'+ srcImglogo_T +'" style="height:' + srcImgHeight +'px;width:' + srcImgWidth +'px;">');
+                }
+                $('.cmd[data-cmd_uid=#uid#] .value#id#').empty().append(_options.display_value+' '+'#unite#');
+            $('.cmd[data-cmd_id=#id#]').attr('title','Valeur du '+_options.valueDate+', collectée le '+_options.collectDate)  
+            // Derniere durée changement dernier etat //Merci @Salvialf pour le code
+                if (srcImglogoTime == "duree") {
+                    jeedom.cmd.displayDuration(_options.valueDate, $('.cmd[data-cmd_uid=#uid#] .timeCmd#id#'));
+                } else if (srcImglogoTime == "date") {
+                    var srcdate     = new Date(_options.valueDate);
+                    var srcformat   = $.datepicker.formatDate('D dd/mm', srcdate);
+                    var srctime     = "à "+srcdate.getHours()+":"+(srcdate.getMinutes()<10?'0':'')+srcdate.getMinutes();
+                    $('.cmd[data-cmd_uid=#id#] .timeCmd#id#').empty().html(srcformat+'<br>'+srctime);
+                } else if (srcImglogoTime == "heure") {
+                    var srcdate     = new Date(_options.valueDate);
+                    var srctime     = "à "+srcdate.getHours()+":"+(srcdate.getMinutes()<10?'0':'')+srcdate.getMinutes()+":"+(srcdate.getSeconds()<10?'0':'')+srcdate.getSeconds()+"";
+                    $('.cmd[data-cmd_id=#uid#] .timeCmd#id#').empty().html(srctime);
+                };
     }
     jeedom.cmd.update['#id#']({display_value:'#state#',valueDate:'#valueDate#',collectDate:'#collectDate#',alertLevel:'#alertLevel#'});
 </script>
+</div>
